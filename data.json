@@ -1,13 +1,5 @@
 {
   "proyecto": [
-    {
-        "id": 1,
-        "titulo": "TEST",
-        "descripcion": "Automatización de escaneo.",
-        "imagen": "img/p1.jpg",
-        "video": "https://media.githubusercontent.com/media/Th3W0lfM1k3/th3w0lfm1k3.github.io/refs/heads/main/videos/v1.mp4",
-        "tags": ["updates"],
-        "link": "media.html?v=1"
-    }
+    
   ]
 }
