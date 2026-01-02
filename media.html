@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Th3W0lfM1k3 | Reproductor</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+</head>
+<body class="bg-black text-slate-300 font-['JetBrains_Mono'] antialiased min-h-screen flex flex-col">
+
+    <nav class="shrink-0 bg-black/90 backdrop-blur-md border-b border-[#2f3336] p-4 z-50">
+        <div class="max-w-[1400px] mx-auto flex justify-between items-center">
+            <a href="index.html" class="flex items-center gap-3 group">
+                <div class="w-2 h-2 bg-blue-500 rounded-full animate-pulse shadow-[0_0_10px_#3b82f6]"></div>
+                <h1 class="text-white font-bold tracking-tighter text-sm uppercase group-hover:text-blue-400">Th3W0lfM1k3 - Miguel Antón</h1>
+            </a>
+            <div class="flex items-center gap-4">
+                <div class="relative flex bg-[#16181c] p-1 rounded-full border border-[#2f3336]">
+                    <a href="index.html" class="px-5 py-1 text-[10px] font-black text-slate-500 uppercase hover:text-white transition-colors">Main</a>
+                    <a href="index.html" class="px-5 py-1 text-[10px] font-black text-slate-500 uppercase hover:text-white transition-colors">Media</a>
+                    <a href="index.html" class="px-5 py-1 text-[10px] font-black text-slate-500 uppercase hover:text-white transition-colors">Comunidad</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center p-6 md:p-12">
+        <div id="media-wrapper" class="max-w-[1100px] w-full opacity-0 transition-opacity duration-1000">
+            
+            <div class="relative w-full aspect-video rounded-3xl overflow-hidden border border-[#2f3336] bg-black shadow-2xl">
+                <video id="video-player" controls autoplay class="w-full h-full object-contain" poster="">
+                    <source id="video-source" src="" type="video/mp4">
+                </video>
+            </div>
+
+            <div class="mt-10">
+                <div id="tag-list" class="flex flex-wrap gap-4 mb-4"></div>
+                <h2 id="media-title" class="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter leading-tight mb-6"></h2>
+                <div class="h-[1px] w-full bg-[#2f3336] mb-6"></div>
+                <p id="media-description" class="text-slate-400 text-sm md:text-base leading-relaxed max-w-3xl"></p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        async function fetchMedia() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetId = urlParams.get('v');
+
+            if (!targetId) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            try {
+                const response = await fetch('data.json');
+                const data = await response.json();
+
+                const proyecto = data.proyectos.find(p => String(p.id) === targetId);
+
+                if (proyecto) {
+                    const player = document.getElementById('video-player');
+                    const source = document.getElementById('video-source');
+                    
+                    // Asignar imagen de fondo (poster) y video
+                    player.setAttribute('poster', proyecto.imagen);
+                    source.src = proyecto.video;
+                    
+                    player.load();
+
+                    document.getElementById('media-title').textContent = proyecto.titulo || "VIDEO NO TITULADO #" + proyecto.id;
+                    document.getElementById('media-description').textContent = proyecto.descripcion;
+                    document.title = `${proyecto.titulo || 'Video'} | Th3W0lfM1k3`;
+
+                    const tagContainer = document.getElementById('tag-list');
+                    tagContainer.innerHTML = proyecto.tags.map(t => 
+                        `<span class="text-blue-500 text-xs font-black uppercase tracking-widest">#${t}</span>`
+                    ).join('');
+
+                    document.getElementById('media-wrapper').classList.replace('opacity-0', 'opacity-100');
+                } else {
+                    window.location.href = 'index.html';
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                window.location.href = 'index.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', fetchMedia);
+    </script>
+</body>
+</html>
