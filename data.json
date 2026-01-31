@@ -1,5 +1,13 @@
 {
-  "proyecto": [
-    
+  "proyectos": [
+    {
+        "id": 1,
+        "titulo": "Escenario en Blender #1",
+        "descripcion": "Un video de prueba de las muchas animaciónes que hago con blender con coordinación de música.",
+        "imagen": "img/p1.jpg",
+        "video": "videos/v1.mp4",
+        "tags": ["blender", "animación", "video"],
+        "link": "media.html?v=1"
+    }
   ]
 }
